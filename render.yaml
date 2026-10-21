@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nova-agent
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.18.0
+      - key: OLLAMA_MODEL
+        value: qwen2.5:0.5b

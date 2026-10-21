@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090d18">
+<meta name="description" content="NOVA — a free-first AI workspace with specialist agents and persistent memory.">
+<title>NOVA — AI Agent Workspace</title><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+<a class="brand" href="/" aria-label="NOVA home"><span class="brand-mark">✳</span><span>NOVA<span class="brand-sub">AI WORKSPACE</span></span></a>
+<button class="new-chat" id="newChat"><span>＋</span> New conversation <kbd>Ctrl K</kbd></button>
+<div class="nav-label">WORKSPACE</div>
+<button class="nav-item active" data-view="chat"><span>◈</span> AI Assistant</button>
+<button class="nav-item" data-view="dashboard"><span>▦</span> Dashboard</button>
+<button class="nav-item" data-view="agents"><span>✧</span> Agent studio</button>
+<button class="nav-item" data-view="memory"><span>◉</span> Memory vault</button>
+<div class="nav-label section-label">SPECIALISTS</div>
+<div id="agentNav" class="agent-nav">
+<button class="agent-link selected" data-agent="nova"><span class="agent-dot purple">✳</span> NOVA <small>General</small></button>
+<button class="agent-link" data-agent="researcher"><span class="agent-dot blue">⌕</span> Researcher <small>Analysis</small></button>
+<button class="agent-link" data-agent="coder"><span class="agent-dot green">&lt;/&gt;</span> CodePilot <small>Coding</small></button>
+<button class="agent-link" data-agent="writer"><span class="agent-dot orange">✎</span> Wordsmith <small>Writing</small></button>
+<button class="agent-link" data-agent="planner"><span class="agent-dot pink">◷</span> Strategist <small>Planning</small></button>
+</div>
+<div class="side-bottom"><div class="free-card"><div class="free-icon">✦</div><div><strong>Free by design</strong><p>Local model support. No paid API required.</p></div></div>
+<button class="profile" id="settingsBtn"><span class="avatar">N</span><span><strong>Workspace settings</strong><small id="modeSmall">Checking model…</small></span><span class="dots">•••</span></button></div>
+</aside>
+<main class="main">
+<header class="topbar"><button class="mobile-menu" id="menuBtn" aria-label="Toggle menu">☰</button><div class="crumb">Workspace <span>/</span> <b id="crumbTitle">AI Assistant</b></div><div class="top-actions"><span class="status-dot" id="statusDot"></span><span id="modeLabel">Checking model</span><button class="settings-pill" id="openSettings">⚙ <span>Settings</span></button></div></header>
+<section class="view active" id="view-chat">
+<div class="chat-area" id="chatArea">
+<div class="welcome" id="welcome"><div class="orb"><span>✳</span><i></i></div><div class="eyebrow"><span class="status-dot"></span> YOUR PERSONAL AI WORKSPACE</div>
+<h1>Make room for<br><span>better thinking.</span></h1><p class="welcome-copy">One workspace. Five specialist agents. Persistent memory. Built to run free-first.</p>
+<div class="suggestions">
+<button class="suggestion" data-prompt="Help me plan and build a website from scratch."><span class="suggest-icon purple">⌘</span><span><b>Build something</b><small>Plan a website or app</small></span><span class="arrow">↗</span></button>
+<button class="suggestion" data-prompt="Explain AI agents and compare the main architectures."><span class="suggest-icon blue">✧</span><span><b>Research a topic</b><small>Clear analysis, step by step</small></span><span class="arrow">↗</span></button>
+<button class="suggestion" data-prompt="Brainstorm five useful free AI project ideas."><span class="suggest-icon orange">✎</span><span><b>Brainstorm ideas</b><small>Explore possibilities</small></span><span class="arrow">↗</span></button>
+<button class="suggestion" data-prompt="Create a practical action plan for my next project."><span class="suggest-icon green">◷</span><span><b>Make a plan</b><small>Turn a goal into tasks</small></span><span class="arrow">↗</span></button>
+</div></div><div class="messages" id="messages" aria-live="polite"></div>
+</div>
+<footer class="composer-wrap"><div class="agent-picker"><span>Agent</span><select id="activeAgent" aria-label="Choose agent"><option value="nova">✳ NOVA · General</option><option value="researcher">⌕ Researcher · Analysis</option><option value="coder">&lt;/&gt; CodePilot · Coding</option><option value="writer">✎ Wordsmith · Writing</option><option value="planner">◷ Strategist · Planning</option></select><span id="memoryIndicator">Memory enabled</span></div>
+<div class="composer"><textarea id="promptInput" rows="1" placeholder="Message NOVA..." aria-label="Message NOVA"></textarea><div class="composer-bottom"><div class="composer-tools"><span class="hint">Enter to send · Shift+Enter for new line</span></div><button class="send-btn" id="sendBtn" aria-label="Send message">↑</button></div></div><p class="disclaimer" id="disclaimer">Local AI status is being checked. Your conversations are stored in this app's SQLite database.</p></footer>
+</section>
+<section class="view page-view" id="view-dashboard"><div class="page-heading"><div class="eyebrow">WORKSPACE OVERVIEW</div><h1>Your dashboard</h1><p>Usage and recent activity for this NOVA workspace.</p></div><div class="stat-grid" id="statsGrid"></div><div class="panel"><div class="panel-heading"><div><h2>Recent conversations</h2><p>Saved locally in SQLite</p></div><button class="primary-btn small" id="dashboardNewChat">＋ New chat</button></div><div id="recentChats" class="recent-list"></div></div><div class="panel"><div class="panel-heading"><div><h2>Specialist agents</h2><p>Pick the right role for your task</p></div></div><div id="dashboardAgents" class="agent-cards"></div></div></section>
+<section class="view page-view" id="view-agents"><div class="page-heading"><div class="eyebrow">MULTI-AGENT WORKSPACE</div><h1>Agent studio</h1><p>Each specialist uses a different system prompt. They share workspace memories and conversation storage.</p></div><div id="studioAgents" class="agent-cards"></div><div class="panel"><h2>How agent routing works</h2><p class="muted">Choose an agent in the chat composer or select a specialist card. Requests are routed to the same configured local model with role-specific instructions. This is single-agent routing today, not an autonomous agent swarm.</p></div></section>
+<section class="view page-view" id="view-memory"><div class="page-heading"><div class="eyebrow">PERSISTENT CONTEXT</div><h1>Memory vault</h1><p>Save preferences or project facts. Memories are injected into agent prompts when relevant.</p></div><form id="memoryForm" class="memory-form"><label for="memoryContent">New memory</label><textarea id="memoryContent" rows="3" maxlength="2000" placeholder="Example: My project uses vanilla JavaScript and Node.js." required></textarea><div class="memory-form-bottom"><select id="memoryCategory" aria-label="Memory category"><option value="general">General</option><option value="preference">Preference</option><option value="project">Project</option><option value="workflow">Workflow</option></select><button class="primary-btn" type="submit">＋ Save memory</button></div></form><div class="memory-list" id="memoryList"></div></section>
+</main></div>
+<div class="modal-backdrop hidden" id="settingsModal"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><div><div class="eyebrow">PERSONALIZE WORKSPACE</div><h2 id="modalTitle">Workspace settings</h2></div><button class="icon-btn" id="closeSettings" aria-label="Close settings">×</button></div><p class="modal-copy">NOVA uses the local Ollama service configured on the server. In public hosting, a local phone endpoint will not be reachable from the host.</p><div class="setting-info"><span class="status-dot" id="settingsStatus"></span><div><strong id="settingsModel">Checking model…</strong><p id="settingsDetail">Checking server health</p></div></div><p class="field-note">Configure OLLAMA_HOST and OLLAMA_MODEL as server environment variables. Never expose an unauthenticated Ollama endpoint to the public internet.</p><div class="modal-actions"><button class="primary-btn" id="closeSettingsBottom">Done</button></div></section></div>
+<div class="toast" id="toast" role="status"></div><script src="/app.js"></script>
+</body></html>
