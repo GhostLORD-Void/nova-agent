@@ -65,7 +65,11 @@ function demoReply(message, agent) {
   return label + ' is ready. Your message was saved to this conversation. To get a generated answer, start Ollama with a downloaded model on this device. Demo mode does not call a language model.\n\nYour prompt: ' + message.slice(0, 500);
 }
 async function handleApi(req,res,url) {
-  if (req.method === 'GET' && url.pathname === '/api/health') return json(res,200,{ok:true,model:MODEL,ollamaHostConfigured:!!OLLAMA_HOST,storage:'sqlite',agents:Object.keys(agents)});
+  if (req.method === 'GET' && url.pathname === '/api/health') {
+    let modelAvailable=false;
+    try { const check=await fetch(OLLAMA_HOST+'/api/tags',{signal:AbortSignal.timeout(1200)}); if(check.ok){const info=await check.json();modelAvailable=Array.isArray(info.models)&&info.models.some(m=>m.name===MODEL)} } catch {}
+    return json(res,200,{ok:true,model:MODEL,modelAvailable,storage:'sqlite',agents:Object.keys(agents)});
+  }
   const sid=sessionFor(req,res);
   if (req.method === 'GET' && url.pathname === '/api/dashboard') {
     const totalMessages = db.prepare('SELECT COUNT(*) AS n FROM messages m JOIN conversations c ON c.id=m.conversation_id WHERE c.session_id=?').get(sid).n;
