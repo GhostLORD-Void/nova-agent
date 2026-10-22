@@ -1,5 +1,7 @@
 # NOVA — AI Workspace
 
+[![OpenRepos](https://img.shields.io/endpoint?url=https://openrepos.org/status/ghostlord.openrepos.org.json&style=flat-square)](https://ghostlord.openrepos.org/)
+
 NOVA is a no-framework Node.js web app with five specialist agent personas, persistent SQLite conversations, a memory vault, and a usage dashboard. It runs locally for free and includes a Render free-tier deployment blueprint.
 
 ## Run locally (Termux / Node.js 22.5+)
